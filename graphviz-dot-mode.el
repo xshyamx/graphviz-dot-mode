@@ -270,7 +270,7 @@ argument (C-u) to remove any existing preview png file."
   "Runs the preview for the file with the sentinel on completion"
   (if (file-exists-p filename)
       (let ((ps (graphviz--preview-process filename)))
-	(process-put ps :filename (concat (file-name-sans-extension filename) ".one"))
+	(process-put ps :filename (concat (file-name-sans-extension filename) ".png"))
 	(set-process-sentinel ps sentinel))
     (user-error "File not present. Save file before previewing" )))
 
@@ -281,16 +281,22 @@ argument (C-u) to remove any existing preview png file."
     (user-error "Generating preview failed")))
 
 (defun graphviz--open-preview-program (filename)
-  "Launch MS-Paint to preview generated png file"
-  (let ((default-directory (file-name-directory filename))
-	(target-file (file-name-nondirectory filename))
-	(buffer-name "*graphviz-open-preview*" ))
-    (if (string-equal graphviz-preview-program graphviz-ms-paint)
-	(start-process buffer-name nil graphviz-preview-program target-file)
-      (if (fboundp 'w32-shell-execute)
-	  (w32-shell-execute "open" target-file)
-	(shell-command (concat "open " target-file))))
-    ))
+  "Launch program to preview generated png file"
+  (let ((preview-program
+	 (cl-case system-type
+	   (darwin "open")
+	   ((ms-dos windows-nt cygwin) "start")
+	   ((gnu gnu/linux gnu/kfreebsd) "xdg-open")))
+	(default-directory (file-name-directory filename))
+	(target-file (file-name-nondirectory filename)))
+    (if (and (string= "start" preview-program)
+	     (fboundp 'w32-shell-execute))
+	(w32-shell-execute "open" target-file)
+      (shell-command (concat
+		      (executable-find preview-program)
+		      " "
+		      target-file)))))
+
 (defun graphviz-open-preview ()
   "Open generated preview png file in MS-Paint"
   (interactive)
