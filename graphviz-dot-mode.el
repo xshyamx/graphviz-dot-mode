@@ -309,7 +309,7 @@ argument (C-u) to remove any existing preview png file."
   "Starter bootstrap for graphviz diagram"
   (interactive)
   (goto-char 0)
-  (let ((start "diagrap G {\n  "))
+  (let ((start "digraph G {\n  "))
     (insert (format "%s\n}" start))
     (goto-char (1+ (length start)))))
 
