@@ -13,15 +13,6 @@
   :type 'boolean
   :group 'graphviz)
 
-(defconst graphviz-ms-paint "mspaint"
-  "Constant for MS-Paint executable name")
-
-(defcustom graphviz-preview-program "msphotos"
-  "Program to use for opening preview files"
-  :type 'string
-  :options '(mspaint msphotos)
-  :group 'graphviz)
-
 ;;; default mode map
 (defvar graphviz-dot-mode-map
   (let ((keymap (make-sparse-keymap)))
