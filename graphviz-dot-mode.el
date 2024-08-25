@@ -16,12 +16,12 @@
 ;;; default mode map
 (defvar graphviz-dot-mode-map
   (let ((keymap (make-sparse-keymap)))
-    (define-key keymap (kbd "C-c C-c")	#'graphviz-preview)
-    (define-key keymap (kbd "C-c C-o")	#'graphviz-open-preview)
-    (define-key keymap (kbd "C-c !")	#'graphviz-bootstrap-template)
-    (define-key keymap (kbd "C-c i r")	#'graphviz-insert-record)
-    (define-key keymap (kbd "C-c i c")	#'graphviz-insert-cylinder)
-    (define-key keymap (kbd "C-c i n")	#'graphviz-insert-node)
+    (keymap-set keymap "C-c C-c" #'graphviz-preview)
+    (keymap-set keymap "C-c C-o" #'graphviz-open-preview)
+    (keymap-set keymap "C-c !"	 #'graphviz-bootstrap-template)
+    (keymap-set keymap "C-c i r" #'graphviz-insert-record)
+    (keymap-set keymap "C-c i c" #'graphviz-insert-cylinder)
+    (keymap-set keymap "C-c i n" #'graphviz-insert-node)
     keymap)
   "Mode map for Graphviz")
 
