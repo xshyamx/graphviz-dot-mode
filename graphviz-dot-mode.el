@@ -216,7 +216,7 @@
 (define-derived-mode graphviz-dot-mode prog-mode "dot"
   "Major mode for GraphViz dot language"
   (setq-local font-lock-defaults '(graphviz-font-lock-keywords))
-  (add-hook 'xref-backend-functions #'graphviz-xref-backend)
+  (add-hook 'xref-backend-functions #'graphviz-xref-backend t)
   (run-hooks 'graphviz-dot-mode-hook)
   )
 
