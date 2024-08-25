@@ -16,10 +16,14 @@
 ;;; default mode map
 (defvar graphviz-dot-mode-map
   (let ((keymap (make-sparse-keymap)))
-    (define-key keymap (kbd "C-c C-c") #'graphviz-preview)
-    (define-key keymap (kbd "C-c C-o") #'graphviz-open-preview)
-    (define-key keymap (kbd "C-c !") #'graphviz-bootstrap-template)
-    keymap))
+    (define-key keymap (kbd "C-c C-c")	#'graphviz-preview)
+    (define-key keymap (kbd "C-c C-o")	#'graphviz-open-preview)
+    (define-key keymap (kbd "C-c !")	#'graphviz-bootstrap-template)
+    (define-key keymap (kbd "C-c i r")	#'graphviz-insert-record)
+    (define-key keymap (kbd "C-c i c")	#'graphviz-insert-cylinder)
+    (define-key keymap (kbd "C-c i n")	#'graphviz-insert-node)
+    keymap)
+  "Mode map for Graphviz")
 
 (defvar graphviz-dot-mode-hook nil
   "Standard mode hook for graphviz-dot-mode")
@@ -376,5 +380,39 @@ argument (C-u) to remove any existing preview png file."
 (cl-defmethod xref-backend-references ((_ (eql graphviz)) symbol)
   "List of references matching symbol"
   (graphviz--find-references symbol))
+
+(defun graphviz--make-alias (s)
+  "Construct an alias from the string"
+  (mapconcat
+   (lambda (x) (char-to-string (car (append x nil))))
+   (seq-filter
+    (lambda (s) (>  (length s) 0))
+    (mapcar
+     (lambda (x)
+       (replace-regexp-in-string
+	(rx (not (any word digit)))
+	"" x))
+     (split-string
+      (downcase
+       (replace-regexp-in-string "\\\\n\\|[\n_]+" " " s)))))
+   ""))
+
+(defun graphviz--insert-shape (shape)
+  "Insert node with shape"
+  (when-let ((label (read-string "Label: ")) )
+    (let ((alias (graphviz--make-alias label)))
+      (setq alias (read-string "Alias: " alias))
+      (insert alias "[shape=" shape ",label=\"" label "\"]"))))
+
+(defun graphviz-insert-record ()
+  (interactive)
+  (graphviz--insert-shape "record"))
+(defun graphviz-insert-node ()
+	(interactive)
+	(graphviz--insert-shape "box"))
+(defun graphviz-insert-cylinder ()
+	(interactive)
+	(graphviz--insert-shape "cylinder"))
+
 
 (provide 'graphviz-dot-mode)
