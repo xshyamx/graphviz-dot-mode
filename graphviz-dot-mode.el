@@ -227,7 +227,7 @@
 ;;;###autoload
 (add-to-list
  'auto-mode-alist
- '("\\.\\(gv\\/dot\\)\\'" - graphviz-dot-mode) t)
+ '("\\.\\(gv\\|dot\\)\\'" . graphviz-dot-mode) t)
 
 ;;; preview functions
 (defun graphviz--preview-process (filename)
