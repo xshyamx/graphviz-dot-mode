@@ -4,7 +4,7 @@ Major mode for [Graphviz](https://graphviz.org/) files.
 
 Supports
 
-- Xref navigation of component definitions & references
+- Xref navigation of node definitions & references within the same file
 - Generating png preview files using the `dot` executable
 
 Adds the following keybindings
